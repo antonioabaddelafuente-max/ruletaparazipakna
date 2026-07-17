@@ -1,4 +1,4 @@
-// Tus premios actualizados con la distribución manual solicitada (Total: 20 casillas)
+// Tus premios en la ruleta (Total: 20 casillas)
 const originalPrizes = [
   '10%', 'Gracias', '3%', 'Gracias', '5%',    
   'Gracias', '3%', 'Gracias', '10%', 'Gracias', 
@@ -55,23 +55,22 @@ draw();
 document.getElementById('spin').onclick = () => {
   document.getElementById('spin').style.pointerEvents = 'none';
 
-  // 1. Probabilidad de ganar configurada a 1 de 100 (1%)
-  const win = Math.random() < 0.01; 
+  // Probabilidad configurada a 1 entre 1000 (0.1%) para que casi NUNCA salga premio
+  const win = Math.random() < 0.001; 
   let premioAsignado = 'Gracias';
 
   if (win) {
-    // Si gana, decidimos cuál de los premios le toca (proporcional a tus cantidades: 2 de 10%, 2 de 5%, 3 de 3%)
+    // Si ocurre el milagro de ganar, reparte entre los porcentajes disponibles
     const randPremio = Math.random();
     if (randPremio < 0.285) { 
-      premioAsignado = '10%'; // ~2 de 7 opciones ganadoras
+      premioAsignado = '10%'; 
     } else if (randPremio < 0.571) { 
-      premioAsignado = '5%';  // ~2 de 7 opciones ganadoras
+      premioAsignado = '5%';  
     } else { 
-      premioAsignado = '3%';  // ~3 de 7 opciones ganadoras
+      premioAsignado = '3%';  
     }
   }
 
-  // 2. Buscar la posición física en la ruleta mezclada
   const indicesPosibles = [];
   prizes.forEach((p, index) => {
     if (p === premioAsignado) indicesPosibles.push(index);
@@ -89,9 +88,7 @@ document.getElementById('spin').onclick = () => {
     if (p < 1) {
       requestAnimationFrame(anim);
     } else {
-      // 3. Muestra directamente el texto del premio sin agregarle mensajes adicionales
       document.getElementById('resultado').textContent = prizes[idx];
-      
       document.getElementById('spin').style.pointerEvents = 'auto';
     }
   }
