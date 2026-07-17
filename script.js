@@ -55,8 +55,8 @@ draw();
 document.getElementById('spin').onclick = () => {
   document.getElementById('spin').style.pointerEvents = 'none';
 
-  // Probabilidad del 1.5% (Entre 1 y 2 ganadores reales por cada 100 tiros)
-  const win = Math.random() < 0.015; 
+  // Probabilidad del 8% -> Aproximadamente 8 ganadores por cada 100 tiros
+  const win = Math.random() < 0.08; 
   let premioAsignado = 'Gracias';
 
   if (win) {
