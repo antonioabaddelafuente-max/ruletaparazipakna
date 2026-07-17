@@ -55,19 +55,18 @@ draw();
 document.getElementById('spin').onclick = () => {
   document.getElementById('spin').style.pointerEvents = 'none';
 
-  // Probabilidad configurada a 1 entre 1000 (0.1%) para que casi NUNCA salga premio
-  const win = Math.random() < 0.001; 
+  // Probabilidad del 1.5% (Entre 1 y 2 ganadores reales por cada 100 tiros)
+  const win = Math.random() < 0.015; 
   let premioAsignado = 'Gracias';
 
   if (win) {
-    // Si ocurre el milagro de ganar, reparte entre los porcentajes disponibles
     const randPremio = Math.random();
     if (randPremio < 0.285) { 
       premioAsignado = '10%'; 
     } else if (randPremio < 0.571) { 
       premioAsignado = '5%';  
     } else { 
-      premioAsignado = '3%';  
+      premioAsignado = '3%'; 
     }
   }
 
@@ -77,8 +76,14 @@ document.getElementById('spin').onclick = () => {
   });
   const idx = indicesPosibles[Math.floor(Math.random() * indicesPosibles.length)];
 
-  const target = (Math.PI * 2 * 6) - (idx * arc) - (arc / 2);
-  let start = rot, d = target - start, t0 = null;
+  // CORRECCIÓN CLAVE: Restamos Math.PI / 2 para alinear el cálculo con la flecha de ARRIBA
+  const girosCompletos = Math.PI * 2 * 6;
+  const target = girosCompletos - (idx * arc) - (arc / 2) - (Math.PI / 2);
+  
+  // Limpiamos vueltas anteriores para evitar saltos raros en giros consecutivos
+  let start = rot % (Math.PI * 2);
+  let d = target - start;
+  let t0 = null;
 
   function anim(t) {
     if (!t0) t0 = t;
